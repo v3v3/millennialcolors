@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Tilt+Warp&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rampart+One&display=swap');
+body {
+  font-family: 'Tilt Warp', sans-serif;
+}
+h1, h4 {
+  font-family: 'Rampart One', sans-serif;
+}
+.display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+}
+.display.punctuate {
+  padding: 5rem 0 0.5rem 0;
+}
+.colorblocks {
+  position: relative;
+  width: 50rem;
+  height: 50rem;
+  color: white;
+  text-align: center;
+  margin: 10rem 0;
+}
+.colortexts {
+  position: absolute;
+  text-align: center;
+  top: 0;
+  left: 0;
+  font-size: 8rem;
+  line-height: 50rem;
+  text-transform: uppercase;
+  margin-left: -25rem;
+  width: 100rem;
+  color: white;
+}
+.metadata {
+  position: absolute;
+  top: 50rem;
+  left: 0;
+  color: gray;
+  font-family: sans-serif;
+  font-weight: 700;
+  margin: 6px 0;
+}
+.metadata li {
+  list-style: none;
+  font-size: 10px;
+  line-height: 10px;
+  text-align: left;
+}
