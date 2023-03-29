@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Colors</title>
+    <script src="jszip.min.js"></script>
+    <style>
+      .color-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        width: 10rem;
+        height: 10rem;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Colors</h1>
+    <div id="colors"></div>
+    <script src="colors.js"></script>
+    <script>
+      // create a new JSZip instance
+      const zip = new JSZip();
+
+      // iterate over each color
+      colors.forEach(color => {
+        // create a new canvas element
+        const canvas = document.createElement('canvas');
+
+        // set the canvas dimensions to 5x5 pixels
+        canvas.width = 5;
+        canvas.height = 5;
+
+        // get the 2D context of the canvas
+        const context = canvas.getContext('2d');
+
+        // draw a rectangle with the color
+        context.fillStyle = color.hex;
+        context.fillRect(0, 0, 5, 5);
+
+        // get the data URL of the canvas as a PNG image
+        const dataUrl = canvas.toDataURL('image/png');
+
+        // add the image to the zip file with the color name as filename
+        zip.file(`${color.name.toUpperCase()} ${color.hex}.png`, dataUrl.split(',')[1], { base64: true });
+      });
+
+      // generate the zip file and download it
+      zip.generateAsync({ type: 'blob' }).then(blob => {
+        const link = document.createElement('a');
+        link.download = 'color-squares.zip';
+        link.href = URL.createObjectURL(blob);
+        document.body.appendChild(link);
+        link.click();
+      });
+    </script>
+  </body>
+</html>
