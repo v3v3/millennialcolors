@@ -4,26 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>MILLENNIAL COLORS by The Color Blocks</title>
+    <link rel="shortcut icon" type="image/jpg" href="logo.png"/>
     <link rel="stylesheet" href="/styles/normalize.css" />
     <link rel="stylesheet" href="/styles/barebones.css" />
     <link rel="stylesheet" href="/styles/app.css" />
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   </head>
   <body x-data="{
+    colors: [],
+    query: '',
+    searchedColors (){
+      // Return all if query is empty
+      if (this.query.length === 0) return this.colors;
+      // Init search
+      this.showSearchResults = false;
+      // Split query into words
+      let query = this.query.split(' ');
+      // Filter colors by query
+      let results = this.colors.filter(item => {
+        return query.every(word => {
+          return `${item.name} ${item.hex} ${item.decade}`.toLowerCase().includes(word.toLowerCase());
+        });
+      });
+      this.showSearchResults = true;
+      return results;
+    },
+    get resultsEmpty() {
+      return this.searchedColors().length === 0;
+    },
     async getColors() {
       const response = await fetch('/colors.json');
       return await response.json();
+    },
+    async init() {
+      this.colors = await this.getColors();
     }
   }">
-    <div class="display punctuate">
+    <div class="border top">
+      <template x-for="color in colors.slice(0, 30)">
+        <div class="border-item" :style="{ backgroundColor: color.hex }"></div>
+      </template>
+    </div>
+    <div class="display punctuate" x-init="await init()">
       <h1>MILLENNIAL COLORS</h1>
     </div>
     <div class="display">
-      <p>Inspired by <a href="https://juiceboxinteractive.com/blog/color/">Juicebox Interactive &#8680</a></p>
+      <p>Inspired by <a href="https://juiceboxinteractive.com/blog/color/" target="_blank">Juicebox Interactive &#8680</a></p>
     </div>
     <div class="display punctuate">
-      <a href="https://twitter.com/thecolorblocks_">
-        <svg fill="#000000" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 310 310" xml:space="preserve">
+      <a href="https://twitter.com/thecolorblocks_" target="_blank">
+        <svg height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 310 310" xml:space="preserve">
         <g id="XMLID_826_">
           <path id="XMLID_827_" d="M302.973,57.388c-4.87,2.16-9.877,3.983-14.993,5.463c6.057-6.85,10.675-14.91,13.494-23.73
             c0.632-1.977-0.023-4.141-1.648-5.434c-1.623-1.294-3.878-1.449-5.665-0.39c-10.865,6.444-22.587,11.075-34.878,13.783
@@ -41,10 +71,13 @@
         </svg>
       </a>
     </div>
-    <template x-for="color in await getColors()">
+    <div class="display punctuate match-width">
+      <input class="u-full-width" type="text" x-model="query" placeholder="Search by color name, hex, or decade" />
+    </div>
+    <template x-for="color in searchedColors('blue')">
       <div class="display">
         <div class="colorblocks" :style="{ backgroundColor: `${color.hex}` }">
-          <span class="colortexts" x-text="color.name.toUpperCase()" :style="`-webkit-text-stroke: 2px ${color.hex};`"></span>
+          <span class="colortexts" x-text="color.name.toUpperCase()" :style="`-webkit-text-stroke-color: ${color.hex};`"></span>
           <span class="metadata">
             <ul>
               <li><em x-text="color.name.toUpperCase()"></em></li>
@@ -55,8 +88,20 @@
         </div>
       </div>
     </template>
+    <div class="display" x-show="resultsEmpty">
+      <div class="colorblocks">
+        <span class="colortexts" style="color: black;">NGMI?</span>
+      </div>
+    </div>
     <div class="display punctuate">
-      <h4>THE COLOR BLOCKS</h4>
+      <h4>
+        <a href="https://twitter.com/thecolorblocks_" target="_blank" style="text-decoration: none;">@thecolorblocks_</a>
+      </h4>
+    </div>
+    <div class="border bottom">
+      <template x-for="color in colors.slice(30)">
+        <div class="border-item" :style="{ backgroundColor: color.hex }"></div>
+      </template>
     </div>
   </body>
 </html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Banner</title>
+  </head>
+  <body>
+    <h1>Banner</h1>
+    <script>
+      // create a new canvas element
+      const canvas = document.createElement('canvas');
+
+      // set the canvas dimensions to 500x500 pixels
+      canvas.width = 1500;
+      canvas.height = 500;
+
+      // get the 2D context of the canvas
+      const context = canvas.getContext('2d');
+
+      // draw a rectangle with a color of your choice
+      context.fillStyle = '#0081FE';
+      context.fillRect(0, 0, 1500, 500);
+
+      // load the Montserrat font from Google Fonts
+      const font = new FontFace('Tilt', 'url(fonts/Tilt_Warp/TiltWarp-Regular-VariableFont.ttf)');
+
+      // add the font to the document
+      font.load().then(() => {
+        document.fonts.add(font);
+
+        // set the text properties
+        context.fillStyle = '#FFFFFF';
+        context.font = 'bold 100px Tilt';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+
+        // add a "#" character in the center of the canvas
+        context.fillText('SOCIAL BUBBLE', 725, 250);
+
+        // get the data URL of the canvas as a PNG image
+        const dataUrl = canvas.toDataURL('image/png');
+
+        // create a new image element
+        const image = new Image();
+
+        // set the source of the image element to the data URL
+        image.src = dataUrl;
+
+        // append the image element to the DOM
+        document.body.appendChild(image);
+      });
+    </script>
+  </body>
+</html>
